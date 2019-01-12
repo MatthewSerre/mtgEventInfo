@@ -1,6 +1,2 @@
-require "mtgEventInfo/version"
-
-module MtgEventInfo
-  class Error < StandardError; end
-  # Your code goes here...
-end
+require_relative "./mtgEventInfo/version"
+require_relative "./mtgEventInfo/CLI"
