@@ -13,6 +13,9 @@ class MtgEventInfo::CLI
       2. Format
       3. Location
     DOC
+    @events = MtgEventInfo::Event.date
+    # @events.each.with_index(1) do |event, i|
+    #   puts "#{i}. #{event.name} - #{event.location} - #{event.date}"
   end
   
   def menu
@@ -24,7 +27,9 @@ class MtgEventInfo::CLI
       case input
       when "1"
         puts "Lists all upcoming events in date order."
-        @events = MtgEventInfo::Event.date
+        @events.each.with_index(1) do |event, i|
+          puts "#{i}. #{event.name} - #{event.location} - #{event.date}"
+        end
       when "2"
         puts <<-DOC
           Please enter the number corresponding to the format by which you want to sort and display upcoming events.
