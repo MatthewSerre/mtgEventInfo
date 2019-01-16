@@ -32,16 +32,25 @@ class MtgEventInfo::CLI
         end
       when "2"
         puts <<-DOC
-          Please enter the number corresponding to the format by which you want to sort and display upcoming events.
           1. Standard
           2. Limited
           3. Modern
           4. Legacy
           5. Team Constructed
+          Please enter the number corresponding to the format by which you want to sort and display upcoming events.
         DOC
       when "3"
-        puts "Please enter the number corresponding to the loction for which you would like to display upcoming events."
-        puts "Lists alphabetically locations of all upcoming events."
+        @events.each.with_index(1) do |event, i|
+          puts "#{i}. #{event.location}"
+        end
+        location_input = nil
+        while location_input != "back"
+          puts "Please enter the number corresponding to the loction for which you would like to display upcoming events."
+          location_input = gets.strip.downcase
+          if location_input.to_i > 0
+            puts "Well done."
+          end
+        end
       else
         puts "I did not understand your selection."
       end
