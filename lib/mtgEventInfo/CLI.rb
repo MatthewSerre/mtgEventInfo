@@ -13,13 +13,12 @@ class MtgEventInfo::CLI
       2. Format
       3. Location
     DOC
-    @events = MtgEventInfo::Event.date
+    @events = MtgEventInfo::Event.all
     # @events.each.with_index(1) do |event, i|
     #   puts "#{i}. #{event.name} - #{event.location} - #{event.date}"
   end
   
   def menu
-
     input = nil
     while input != "exit"
       puts "Please enter the number corresponding to the option by which you want to sort and display upcoming events or enter 'exit'."
@@ -45,10 +44,16 @@ class MtgEventInfo::CLI
         end
         location_input = nil
         while location_input != "back"
-          puts "Please enter the number corresponding to the loction for which you would like to display upcoming events."
+          puts "Please enter the number corresponding to the loction for which you would like to display upcoming events or enter 'back' to return to the previous menu."
           location_input = gets.strip.downcase
-          if location_input.to_i > 0
+          if location_input.to_i > 0  && location_input.to_i <= @events.length
             puts "Well done."
+          elsif location_input.to_i > @events.length
+            puts "Please enter a number from the list."
+          elsif location_input === "back"
+            menu
+          else
+            puts "I did not understand your selection."
           end
         end
       else

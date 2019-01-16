@@ -2,7 +2,7 @@ class MtgEventInfo::Event
   
   attr_accessor :name, :location, :date, :registration_URL, :mtgFormat
   
-  def self.date
+  def self.all
     # The scraper should create a new event using the scraped data in the form of a hash and send the key value pairs to create an object with all these properties that can then be added to an array and iterated through and accessed from other methods looking for particular details to sort and display.
     
     event_1 = self.new
