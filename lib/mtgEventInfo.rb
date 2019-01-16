@@ -4,3 +4,4 @@ require_relative "./mtgEventInfo/event"
 
 require "nokogiri"
 require "pry"
+require "open-uri"
