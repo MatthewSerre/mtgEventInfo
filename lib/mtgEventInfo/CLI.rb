@@ -19,20 +19,26 @@ class MtgEventInfo::CLI
 
     input = nil
     while input != "exit"
-      puts "Please enter the number corresponding to the option by which you want to sort and display upcoming events."
+      puts "Please enter the number corresponding to the option by which you want to sort and display upcoming events or enter 'exit'."
       input = gets.strip.downcase
       case input
       when "1"
-        puts "Lists all events in date order"
+        puts "Lists all upcoming events in date order."
+        @events = MtgEventInfo::Event.date
       when "2"
         puts <<-DOC
+          Please enter the number corresponding to the format by which you want to sort and display upcoming events.
           1. Standard
           2. Limited
           3. Modern
           4. Legacy
+          5. Team Constructed
         DOC
       when "3"
-        puts ""
+        puts "Please enter the number corresponding to the loction for which you would like to display upcoming events."
+        puts "Lists alphabetically locations of all upcoming events."
+      else
+        puts "I did not understand your selection."
       end
     end
   end
