@@ -26,9 +26,9 @@ class MtgEventInfo::CLI
       input = gets.strip.downcase
       case input
       when "1"
-        puts "Lists all upcoming events in date order."
+        @events.sort_by!(&:date)
         @events.each.with_index(1) do |event, i|
-          puts "#{i}. #{event.name} - #{event.location} - #{event.date}"
+          puts "#{i}. #{event.date} - #{event.name} - #{event.location}"
         end
       when "2"
         puts <<-DOC

@@ -8,7 +8,7 @@ class MtgEventInfo::Event
     event_1 = self.new
     event_1.name = "SCG Open"
     event_1.location = "location"
-    event_1.date = "1/11/11"
+    event_1.date = "1/11/13"
     event_1.registration_URL = "www.google.com"
     
     event_2 = self.new
