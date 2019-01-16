@@ -34,47 +34,23 @@ class MtgEventInfo::Event
   end
   
   def self.scrape_wizards
-    doc = Nokogiri::HTML(open("https://magic.wizards.com/en/content/premier-events-schedule#/overview"))
-    name = doc.search("span.info ng-binding").text
+    doc = Nokogiri::HTML(open("https://magic.wizards.com/en/content/premier-events-schedule#/list"))
+    name = doc.search("div.socials").text
     date = doc.search("h3.ng-binding").text
-    binding.pry
+    # span.info.ng-binding
   end
   
   def self.scrape_scg
-    
-  end
-
-  
-  # def self.date
-  #   # I should return all upcoming events in chronological order.
-
-    
-  #   [event_1]
-  #   # sorted by date
-  # end
-  
-  def self.location
-    # I should return all upcoming events in chronological order.
-    event_1 = self.new
-    event_1.name = "SCG Open"
-    event_1.location = "location"
-    event_1.date = "1/11/11"
-    event_1.registration_URL = "www.google.com"
-    
-    [event_1]
-    # grouped and listed by location
-  end
-  
-  def self.mtgFormat
-    # I should return all upcoming events in chronological order.
-    event_1 = self.new
-    event_1.name = "SCG Open"
-    event_1.location = "location"
-    event_1.date = "1/11/11"
-    event_1.registration_URL = "www.google.com"
-    
-    [event_1]
-    # grouped and sorted by format
+    array = []
+    html = open("http://www.starcitygames.com/content/schedule")
+    doc = Nokogiri::HTML.parse(html)
+    page_events = doc.css("div.event.os-event")
+    page_events.each do |page_event|
+      event = Hash.new
+      event[:location] = doc.search("div.event-city").text
+    end
+    array
+    binding.pry
   end
   
 end
