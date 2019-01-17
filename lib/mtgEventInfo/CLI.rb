@@ -25,9 +25,9 @@ class MtgEventInfo::CLI
       input = gets.strip.downcase
       case input
       when "1"
-        date_events = @events.sort_by!(&:date)
+        date_events = @events
         date_events.each.with_index(1) do |event, i|
-          puts "#{i}. #{event.date} - #{event.name} - #{event.location}"
+          puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
         end
         date_input = nil
         while date_input != "back"
@@ -37,8 +37,6 @@ class MtgEventInfo::CLI
             puts date_events[date_input.to_i-1].name
           elsif date_input.to_i > @events.length
             puts "Please enter a number from the list."
-          elsif date_input === "back"
-            menu
           else
             puts "I did not understand your selection."
           end
