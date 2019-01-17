@@ -14,8 +14,6 @@ class MtgEventInfo::CLI
       3. Location
     DOC
     @events = MtgEventInfo::Event.all
-    # @events.each.with_index(1) do |event, i|
-    #   puts "#{i}. #{event.name} - #{event.location} - #{event.date}"
   end
   
   def menu
@@ -34,7 +32,7 @@ class MtgEventInfo::CLI
           puts "Please enter the number corresponding to the event about which you would like more information or enter 'back'."
           date_input = gets.strip.downcase
           if date_input.to_i > 0  && date_input.to_i <= @events.length
-            puts date_events[date_input.to_i-1].name
+            puts date_events[date_input.to_i-1][:name]
           elsif date_input.to_i > @events.length
             puts "Please enter a number from the list."
           else
@@ -52,7 +50,7 @@ class MtgEventInfo::CLI
         DOC
       when "3"
         @events.each.with_index(1) do |event, i|
-          puts "#{i}. #{event.location}"
+          puts "#{i}. #{event[:location]}"
         end
         location_input = nil
         while location_input != "back"
