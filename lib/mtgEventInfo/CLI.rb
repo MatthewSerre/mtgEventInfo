@@ -52,6 +52,22 @@ class MtgEventInfo::CLI
           5. Team Constructed
           Please enter the number corresponding to the format by which you want to sort and display upcoming events.
         DOC
+          format_input= nil
+          while format_input != "back"
+            format_input = gets.strip.downcase
+            format_events = @events
+            case format_input
+            when "1"
+              puts "Upcoming Standard Events"
+              i = 0
+              format_events.each do |event|
+                if event[:mtgFormat] === "Standard"
+                  i+= 1
+                  puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
+                end
+              end
+            end
+          end
       when "3"
         @events.each.with_index(1) do |event, i|
           puts "#{i}. #{event[:location]}"
