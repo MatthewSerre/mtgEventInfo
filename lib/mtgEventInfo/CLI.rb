@@ -25,7 +25,7 @@ class MtgEventInfo::CLI
       when "1"
         date_events = @events
         date_events.each.with_index(1) do |event, i|
-          puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]} - #{event[:moreInfoURL]}"
+          puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]} - #{event[:moreInfoURL]} - #{event[:mtgFormat]}"
         end
         date_input = nil
         while date_input != "back"
