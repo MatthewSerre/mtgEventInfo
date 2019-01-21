@@ -25,14 +25,18 @@ class MtgEventInfo::CLI
       when "1"
         date_events = @events
         date_events.each.with_index(1) do |event, i|
-          puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]} - #{event[:moreInfoURL]} - #{event[:mtgFormat]}"
+          puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
         end
         date_input = nil
         while date_input != "back"
           puts "Please enter the number corresponding to the event about which you would like more information or enter 'back'."
           date_input = gets.strip.downcase
           if date_input.to_i > 0  && date_input.to_i <= @events.length
-            puts date_events[date_input.to_i-1][:name]
+            puts ""
+            puts "#{date_events[date_input.to_i-1][:location]} #{date_events[date_input.to_i-1][:mtgFormat]} #{date_events[date_input.to_i-1][:name]}"
+              puts date_events[date_input.to_i-1][:date]
+              puts "#{date_events[date_input.to_i-1][:moreInfoURL]}"
+            puts ""
           elsif date_input.to_i > @events.length
             puts "Please enter a number from the list."
           else
