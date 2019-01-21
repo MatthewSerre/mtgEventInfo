@@ -31,7 +31,8 @@ class MtgEventInfo::Event
       event[:name] = page_event.css("div.event-type").text
       event[:location] = page_event.css("div.event-city").text
       event[:date] = page_event["id"]
-      event[:moreInfoURL] = page_event.css("div.event-title a")["href"]
+      event[:moreInfoURL] = page_event.css("div.event-title a")[0]["href"]
+      event[:mtgFormat] = 
       @events.push(event)
     end
     # binding.pry
