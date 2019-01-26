@@ -2,7 +2,6 @@ class MtgEventInfo::CLI
   
   def call
     puts "Welcome to the command line interface for the Magic: The Gathering Event Information tool."
-    list_events_by
     menu
     goodbye
   end
@@ -19,6 +18,7 @@ class MtgEventInfo::CLI
   def menu
     input = nil
     while input != "exit"
+      list_events_by
       puts "Please enter the number corresponding to the option by which you want to sort and display upcoming events or enter 'exit'."
       input = gets.strip.downcase
       case input
@@ -56,17 +56,15 @@ class MtgEventInfo::CLI
         DOC
           format_input= nil
           while format_input != "back"
-            format_input = gets.strip.downcase
+            format_input = gets.strip.downcase.to_i
+            format_array = ["Standard","Limited","Modern","Legacy","Team Constructed"]
             format_events = @events
-            case format_input
-            when "1"
-              puts "Upcoming Standard Events"
-              i = 0
-              format_events.each do |event|
-                if event[:mtgFormat] === "Standard"
-                  i+= 1
-                  puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
-                end
+            puts "Upcoming #{format_array[format_input-1]} Events"
+            i = 0
+            format_events.each do |event|
+              if event[:mtgFormat] === format_array[format_input-1]
+                i+= 1
+                puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
               end
             end
           end
