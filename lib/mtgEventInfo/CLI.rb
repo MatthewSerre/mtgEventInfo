@@ -1,6 +1,7 @@
 class MtgEventInfo::CLI
   
   def call
+    puts "Welcome to the command line interface for the Magic: The Gathering Event Information tool."
     list_events_by
     menu
     goodbye
@@ -8,7 +9,6 @@ class MtgEventInfo::CLI
   
   def list_events_by
     puts <<-DOC
-      Welcome to the command line interface for the Magic: The Gathering Event Information tool.
       1. Date
       2. Format
       3. Location
@@ -39,6 +39,8 @@ class MtgEventInfo::CLI
             puts ""
           elsif date_input.to_i > @events.length
             puts "Please enter a number from the list."
+          elsif date_input == "back"
+          
           else
             puts "I did not understand your selection."
           end
