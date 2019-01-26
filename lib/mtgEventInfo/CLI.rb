@@ -3,7 +3,7 @@ class MtgEventInfo::CLI
   def call
     puts "Welcome to Mox Ruby, a Magic: The Gathering Event Information tool."
     menu
-    goodbye
+    puts "Thank you for using Mox Ruby, a Magic: The Gathering Event Information tool."
   end
   
   def list_events_by
@@ -21,11 +21,11 @@ class MtgEventInfo::CLI
     end
   end
   
-  def submenu
-    @events.each.with_index(1) do |event, i|
-      puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
-    end
-  end
+  # def submenu
+  #   @events.each.with_index(1) do |event, i|
+  #     puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
+  #   end
+  # end
   
   def menu
     
@@ -72,10 +72,9 @@ class MtgEventInfo::CLI
           while format_input != "back"
             format_input = gets.strip.downcase.to_i
             format_array = ["Standard","Limited","Modern","Legacy","Team Constructed"]
-            format_events = @events
             puts "Upcoming #{format_array[format_input-1]} Events"
             i = 0
-            format_events.each do |event|
+            @events.each do |event|
               if event[:mtgFormat] === format_array[format_input-1]
                 i+= 1
                 puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
@@ -84,15 +83,30 @@ class MtgEventInfo::CLI
           end
           
       when "3"
-        @events.each.with_index(1) do |event, i|
-          puts "#{i}. #{event[:location]}"
+        event_locations = []
+        @events.each do |event|
+          event_locations.push("#{event[:location]}")
+        end
+        event_locations.uniq!
+        event_locations.sort!
+        event_locations.each.with_index(1) do |event, i|
+          puts "#{i}. #{event}"
         end
         location_input = nil
         while location_input != "back"
           puts "Please enter the number corresponding to the location for which you would like to display upcoming events or enter 'back' to return to the previous menu."
           location_input = gets.strip.downcase
-          if location_input.to_i > 0  && location_input.to_i <= @events.length
-            puts "Well done."
+          if location_input.to_i > 0  && location_input.to_i <= event_locations.length
+            @events.each do |event|
+              if event[:location] === event_locations[location_input.to_i-1]
+                puts "#{event[:date]} - #{event[:name]} - #{event[:location]}"
+              end
+            end
+            puts ""
+            puts "#{@events[location_input.to_i-1][:location]} #{@events[location_input.to_i-1][:mtgFormat]} #{@events[location_input.to_i-1][:name]}"
+              puts @events[location_input.to_i-1][:date]
+              puts "#{@events[location_input.to_i-1][:moreInfoURL]}"
+            puts ""
           elsif location_input.to_i > @events.length
             puts "Please enter a number from the list."
           elsif location_input === "back"
@@ -101,6 +115,8 @@ class MtgEventInfo::CLI
             puts "I did not understand your selection."
           end
         end
+      
+      when "exit"
         
       else
         puts "I did not understand your selection."
@@ -109,8 +125,5 @@ class MtgEventInfo::CLI
     end
     
   end
-  
-  def goodbye
-    puts "Thank you for using Mox Ruby, a Magic: The Gathering Event Information tool."
-  end
+
 end
