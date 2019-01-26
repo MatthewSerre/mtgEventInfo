@@ -21,6 +21,18 @@ class MtgEventInfo::CLI
     end
   end
   
+  def list_events_by_format
+        @event_locations = []
+        @events.each do |event|
+          @event_locations.push("#{event[:location]}")
+        end
+        @event_locations.uniq!
+        @event_locations.sort!
+        @event_locations.each.with_index(1) do |event, i|
+          puts "#{i}. #{event}"
+        end
+      end
+  
   # def submenu
   #   @events.each.with_index(1) do |event, i|
   #     puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
@@ -83,32 +95,24 @@ class MtgEventInfo::CLI
           end
           
       when "3"
-        event_locations = []
-        @events.each do |event|
-          event_locations.push("#{event[:location]}")
-        end
-        event_locations.uniq!
-        event_locations.sort!
-        event_locations.each.with_index(1) do |event, i|
-          puts "#{i}. #{event}"
-        end
+        list_events_by_format
         location_input = nil
         while location_input != "back"
           puts "Please enter the number corresponding to the location for which you would like to display upcoming events or enter 'back' to return to the previous menu."
           location_input = gets.strip.downcase
-          if location_input.to_i > 0  && location_input.to_i <= event_locations.length
+          if location_input.to_i > 0  && location_input.to_i <= @event_locations.length
             @events.each do |event|
-              if event[:location] === event_locations[location_input.to_i-1]
-                puts "#{event[:date]} - #{event[:name]} - #{event[:location]}"
+              if event[:location] === @event_locations[location_input.to_i-1]
+                puts ""
+                puts "#{event[:date]} - #{event[:name]} - #{event[:mtgFormat]}"
+                puts "#{event[:moreInfoURL]}"
+                puts ""
               end
             end
-            puts ""
-            puts "#{@events[location_input.to_i-1][:location]} #{@events[location_input.to_i-1][:mtgFormat]} #{@events[location_input.to_i-1][:name]}"
-              puts @events[location_input.to_i-1][:date]
-              puts "#{@events[location_input.to_i-1][:moreInfoURL]}"
-            puts ""
           elsif location_input.to_i > @events.length
             puts "Please enter a number from the list."
+          elsif location_input === "list"
+            list_events_by_format
           elsif location_input === "back"
             menu
           else
