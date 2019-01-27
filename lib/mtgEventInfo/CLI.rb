@@ -89,6 +89,7 @@ class MtgEventInfo::CLI
           # puts "Please enter the number corresponding to the event about which you would like more information or enter 'list' to see the list of events again or enter 'back' to return to the main menu."
           format_input = gets.strip.downcase
           format_array = ["Standard","Limited","Modern","Legacy","Team Constructed"]
+          event_array = []
           if format_input.to_i > 0 && format_input.to_i <= format_array.length
             i = 0
             puts "Upcoming #{format_array[format_input.to_i-1]} Events"
@@ -96,14 +97,33 @@ class MtgEventInfo::CLI
               if format_array[format_input.to_i-1] === event[:mtgFormat]
                 i+=1
                 puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
+                event_array.push(event)
+              end
+            end
+            nested_input = nil
+            while nested_input != "back"
+              puts "Please enter the number corresponding to the event about which you would like more information or enter 'list' to see the list of events again or enter 'back' to return to the main menu."
+              nested_input = gets.strip.downcase
+              if nested_input.to_i > 0  && nested_input.to_i <= event_array.length
+                puts ""
+                puts "#{event_array[nested_input.to_i-1][:location]} #{event_array[nested_input.to_i-1][:mtgFormat]} #{event_array[nested_input.to_i-1][:name]}"
+                puts event_array[nested_input.to_i-1][:date]
+                puts "#{event_array[nested_input.to_i-1][:moreInfoURL]}"
+                puts ""
+              elsif nested_input.to_i > event_array.length
+                puts "Please enter a number from the list."
+              elsif nested_input == "list"
+                # list_events_by_nested
+              elsif nested_input == "back"
+              
+              else
+                puts "I did not understand your selection."
               end
             end
           elsif format_input.to_i > format_array.length
             puts "Please enter a number from the list."
           elsif format_input == "formats"
             list_formats
-          elsif format_input == "list"
-            list_events_by_format
           elsif format_input == "back"
         
           else
