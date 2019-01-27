@@ -18,7 +18,7 @@ class MtgEventInfo::CLI
   
   def list_events_by_date
     @events.each.with_index(1) do |event, i|
-      puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
+      puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
     end
   end
   
@@ -40,7 +40,7 @@ class MtgEventInfo::CLI
     @events.each do |event|
       if format_array[format_input.to_i-1] === event[:mtgFormat]
         i+=1
-        puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
+        puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
         @event_array.push(event)
       end
     end
@@ -80,7 +80,7 @@ class MtgEventInfo::CLI
           date_input = gets.strip.downcase
           if date_input.to_i > 0  && date_input.to_i <= @events.length
             puts ""
-            puts "#{@events[date_input.to_i-1][:location]} #{@events[date_input.to_i-1][:mtgFormat]} #{@events[date_input.to_i-1][:name]}"
+            puts "#{@events[:TO]} #{@events[date_input.to_i-1][:location]} #{@events[date_input.to_i-1][:mtgFormat]} #{@events[date_input.to_i-1][:name]}"
               puts @events[date_input.to_i-1][:date]
               puts "#{@events[date_input.to_i-1][:moreInfoURL]}"
             puts ""
@@ -111,8 +111,9 @@ class MtgEventInfo::CLI
               nested_input = gets.strip.downcase
               if nested_input.to_i > 0  && nested_input.to_i <= @event_array.length
                 puts ""
-                puts "#{@event_array[nested_input.to_i-1][:location]} #{@event_array[nested_input.to_i-1][:mtgFormat]} #{@event_array[nested_input.to_i-1][:name]}"
+                puts "#{@event_array[nested_input.to_i-1][:location]} #{@event_array[:TO]} #{@event_array[nested_input.to_i-1][:mtgFormat]} #{@event_array[nested_input.to_i-1][:name]}"
                 puts @event_array[nested_input.to_i-1][:date]
+                puts @event_array[nested_input.to_i-1][:moreInfoURL]
                 puts ""
               elsif nested_input.to_i > @event_array.length
                 puts "Please enter a number from the list."
@@ -143,6 +144,8 @@ class MtgEventInfo::CLI
           puts "Please enter the number corresponding to the location for which you would like to display upcoming events or enter 'back' to return to the previous menu."
           location_input = gets.strip.downcase
           if location_input.to_i > 0  && location_input.to_i <= @event_locations.length
+            puts ""
+            puts "Upcoming Events in #{@event_locations[location_input.to_i-1]}"
             @events.each do |event|
               if event[:location] === @event_locations[location_input.to_i-1]
                 puts ""
