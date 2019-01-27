@@ -1,9 +1,9 @@
 class MtgEventInfo::CLI
   
   def call
-    puts "Welcome to Mox Ruby, a Magic: The Gathering Event Information tool."
+    puts "Welcome to Mox Ruby, a tool for displaying and sorting information about upcoming Magic: The Gathering events."
     menu
-    puts "Thank you for using Mox Ruby, a Magic: The Gathering Event Information tool."
+    puts "Thank you for using Mox Ruby.  Good luck and have fun!"
   end
   
   def list_events_by
@@ -47,16 +47,16 @@ class MtgEventInfo::CLI
   end
   
   def list_events_by_location
-        @event_locations = []
-        @events.each do |event|
-          @event_locations.push("#{event[:location]}")
-        end
-        @event_locations.uniq!
-        @event_locations.sort!
-        @event_locations.each.with_index(1) do |event, i|
-          puts "#{i}. #{event}"
-        end
-      end
+    @event_locations = []
+    @events.each do |event|
+      @event_locations.push("#{event[:location]}")
+    end
+    @event_locations.uniq!
+    @event_locations.sort!
+    @event_locations.each.with_index(1) do |event, i|
+      puts "#{i}. #{event}"
+    end
+  end
   
   # def submenu
   #   @events.each.with_index(1) do |event, i|
@@ -99,7 +99,6 @@ class MtgEventInfo::CLI
         list_formats
         format_input= nil
         while format_input != "back"
-          # puts "Please enter the number corresponding to the event about which you would like more information or enter 'list' to see the list of events again or enter 'back' to return to the main menu."
           format_input = gets.strip.downcase
           format_array = ["Standard","Limited","Modern","Legacy","Team Constructed"]
 
@@ -149,7 +148,8 @@ class MtgEventInfo::CLI
             @events.each do |event|
               if event[:location] === @event_locations[location_input.to_i-1]
                 puts ""
-                puts "#{event[:date]} - #{event[:name]} - #{event[:mtgFormat]}"
+                puts "#{event[:TO]} #{event[:mtgFormat]} #{event[:name]}"
+                puts "#{event[:date]}"
                 puts "#{event[:moreInfoURL]}"
                 puts ""
               end

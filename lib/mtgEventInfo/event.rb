@@ -10,7 +10,7 @@ class MtgEventInfo::Event
     @events = []
     
     self.scrape_cfb
-    self.scrape_scg
+    # self.scrape_scg
     
     @events
   end
@@ -18,10 +18,10 @@ class MtgEventInfo::Event
   def self.scrape_cfb
     html = open("https://www.cfbevents.com/us-canada")
     doc = Nokogiri::HTML.parse(html)
-    page_events = doc.css("div#comp-jmuqvt3rinlineContent-gridContainer")
+    page_events = doc.css("div#comp-jmuqvt3rinlineContent-gridContainer div.txtNew")
     page_events.each do |page_event|
       event = Hash.new
-      event[:name] = page_event.css("span").text
+      event[:name] = page_event.css("span[style='letter-spacing:0.05em;']").text
       # event[:location] = page_event.css("div.event-city").text
       # event[:date] = page_event["id"]
       # event[:moreInfoURL] = page_event.css("div.event-title a")[0]["href"]
