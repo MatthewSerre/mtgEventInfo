@@ -10,7 +10,7 @@ class MtgEventInfo::Event
     @events = []
     
     self.scrape_cfb
-    # self.scrape_scg
+    self.scrape_scg
     
     @events
   end

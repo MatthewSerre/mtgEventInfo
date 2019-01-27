@@ -12,6 +12,7 @@ class MtgEventInfo::CLI
       2. Format
       3. Location
     DOC
+    puts "Please enter the number corresponding to the option by which you want to sort and display upcoming events or enter 'exit'."
     @events = MtgEventInfo::Event.all
   end
   
@@ -21,7 +22,18 @@ class MtgEventInfo::CLI
     end
   end
   
-  def list_events_by_format
+  def list_formats
+    puts <<-DOC
+      1. Standard
+      2. Limited
+      3. Modern
+      4. Legacy
+      5. Team Constructed
+    DOC
+    puts "Please enter the number corresponding to the format by which you want to sort and display upcoming events."
+  end
+  
+  def list_events_by_location
         @event_locations = []
         @events.each do |event|
           @event_locations.push("#{event[:location]}")
@@ -44,7 +56,6 @@ class MtgEventInfo::CLI
     input = nil
     while input != "exit"
       list_events_by
-      puts "Please enter the number corresponding to the option by which you want to sort and display upcoming events or enter 'exit'."
       input = gets.strip.downcase
       
       case input
@@ -72,30 +83,36 @@ class MtgEventInfo::CLI
         end
         
       when "2"
-        puts <<-DOC
-          1. Standard
-          2. Limited
-          3. Modern
-          4. Legacy
-          5. Team Constructed
-          Please enter the number corresponding to the format by which you want to sort and display upcoming events.
-        DOC
-          format_input= nil
-          while format_input != "back"
-            format_input = gets.strip.downcase.to_i
-            format_array = ["Standard","Limited","Modern","Legacy","Team Constructed"]
-            puts "Upcoming #{format_array[format_input-1]} Events"
+        list_formats
+        format_input= nil
+        while format_input != "back"
+          # puts "Please enter the number corresponding to the event about which you would like more information or enter 'list' to see the list of events again or enter 'back' to return to the main menu."
+          format_input = gets.strip.downcase
+          format_array = ["Standard","Limited","Modern","Legacy","Team Constructed"]
+          if format_input.to_i > 0 && format_input.to_i <= format_array.length
             i = 0
+            puts "Upcoming #{format_array[format_input.to_i-1]} Events"
             @events.each do |event|
-              if event[:mtgFormat] === format_array[format_input-1]
-                i+= 1
+              if format_array[format_input.to_i-1] === event[:mtgFormat]
+                i+=1
                 puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
               end
             end
+          elsif format_input.to_i > format_array.length
+            puts "Please enter a number from the list."
+          elsif format_input == "formats"
+            list_formats
+          elsif format_input == "list"
+            list_events_by_format
+          elsif format_input == "back"
+        
+          else
+            puts "I did not understand your selection."
           end
+        end
           
       when "3"
-        list_events_by_format
+        list_events_by_location
         location_input = nil
         while location_input != "back"
           puts "Please enter the number corresponding to the location for which you would like to display upcoming events or enter 'back' to return to the previous menu."
@@ -112,7 +129,7 @@ class MtgEventInfo::CLI
           elsif location_input.to_i > @events.length
             puts "Please enter a number from the list."
           elsif location_input === "list"
-            list_events_by_format
+            list_events_by_location
           elsif location_input === "back"
             menu
           else
