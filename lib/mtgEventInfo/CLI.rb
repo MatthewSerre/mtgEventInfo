@@ -16,12 +16,48 @@ class MtgEventInfo::CLI
     @events = MtgEventInfo::Event.all
   end
   
-  def list_events_by_date
-    @events.each.with_index(1) do |event, i|
-      puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
+  def list_events(selection)
+    if selection === 1
+      @events.each.with_index(1) do |event, i|
+        puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
+      end
+    elsif selection === 2
+      
+    elsif selection === 3
+      @event_locations = []
+      @events.each do |event|
+        @event_locations.push("#{event[:location]}")
+      end
+      @event_locations.uniq!
+      @event_locations.sort!
+      @event_locations.each.with_index(1) do |event, i|
+        puts "#{i}. #{event}"
+      end
     end
   end
   
+  def list_events_with_details(sub_input)
+    while sub_input != "back"
+      puts "Please enter the number corresponding to the event about which you would like more information or enter 'list' to see the list of events again or enter 'back' to return to the main menu."
+      sub_input = gets.strip.downcase
+      if sub_input.to_i > 0  && sub_input.to_i <= @events.length
+        puts ""
+        puts "#{@events[sub_input.to_i-1][:TO]} #{@events[sub_input.to_i-1][:location]} #{@events[sub_input.to_i-1][:mtgFormat]} #{@events[sub_input.to_i-1][:name]}"
+          puts @events[sub_input.to_i-1][:date]
+          puts "#{@events[sub_input.to_i-1][:moreInfoURL]}"
+        puts ""
+      elsif sub_input.to_i > @events.length
+        puts "Please enter a number from the list."
+      elsif sub_input == "list"
+        list_events(1)
+      elsif sub_input == "back"
+      
+      else
+        puts "I did not understand your selection."
+      end
+    end
+  end
+
   def list_formats
     puts <<-DOC
       1. Standard
@@ -47,22 +83,8 @@ class MtgEventInfo::CLI
   end
   
   def list_events_by_location
-    @event_locations = []
-    @events.each do |event|
-      @event_locations.push("#{event[:location]}")
-    end
-    @event_locations.uniq!
-    @event_locations.sort!
-    @event_locations.each.with_index(1) do |event, i|
-      puts "#{i}. #{event}"
-    end
+
   end
-  
-  # def submenu
-  #   @events.each.with_index(1) do |event, i|
-  #     puts "#{i}. #{event[:date]} - #{event[:name]} - #{event[:location]}"
-  #   end
-  # end
   
   def menu
     
@@ -73,27 +95,9 @@ class MtgEventInfo::CLI
       
       case input
       when "1"
-        list_events_by_date
-        date_input = nil
-        while date_input != "back"
-          puts "Please enter the number corresponding to the event about which you would like more information or enter 'list' to see the list of events again or enter 'back' to return to the main menu."
-          date_input = gets.strip.downcase
-          if date_input.to_i > 0  && date_input.to_i <= @events.length
-            puts ""
-            puts "#{@events[:TO]} #{@events[date_input.to_i-1][:location]} #{@events[date_input.to_i-1][:mtgFormat]} #{@events[date_input.to_i-1][:name]}"
-              puts @events[date_input.to_i-1][:date]
-              puts "#{@events[date_input.to_i-1][:moreInfoURL]}"
-            puts ""
-          elsif date_input.to_i > @events.length
-            puts "Please enter a number from the list."
-          elsif date_input == "list"
-            list_events_by_date
-          elsif date_input == "back"
-          
-          else
-            puts "I did not understand your selection."
-          end
-        end
+        list_events(1)
+        sub_input = nil
+        list_events_with_details(sub_input)
         
       when "2"
         list_formats

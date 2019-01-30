@@ -9,8 +9,8 @@ class MtgEventInfo::Event
   def self.scrape_events
     @events = []
     
-    self.scrape_cfb
-    # self.scrape_scg
+    # self.scrape_cfb
+    self.scrape_scg
     
     @events
   end
