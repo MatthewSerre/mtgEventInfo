@@ -63,29 +63,21 @@ class MtgEventInfo::CLI
       @format_selection = nil
       while @format_selection != "back"
         list_formats
-        puts "Please enter the number corresponding to the format by which you want to sort and display upcoming events."
         @format_selection = gets.strip.downcase
         if @format_selection.to_i > 0  && @format_selection.to_i <= @format_array.length
-          i = 0
-          puts ""
-          @events.each.with_index do |event|
-            if @format_array[@format_selection.to_i-1] === event[:mtgFormat]
-              i+=1
-              puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
-            end
-          end
-          puts ""
+          list_events_by_format(@format_selection)
           sub_input = nil
           list_events_with_details(sub_input)
         elsif @format_selection.to_i > @format_array.length
           puts "Please enter a number from the list."
         elsif @format_selection == "list"
-          list_events(@format_selection.to_i)
+          list_events_by_format
         elsif @format_selection == "back"
-        
+    
         else
           puts "I did not understand your selection."
         end
+
       end
 
     elsif selection === 3
@@ -106,8 +98,8 @@ class MtgEventInfo::CLI
           if event[:location] === @events[selection.to_i-1][:location]
             puts ""
             puts "#{@events[selection.to_i-1][:TO]} #{@events[selection.to_i-1][:location]} #{@events[selection.to_i-1][:mtgFormat]} #{@events[selection.to_i-1][:name]}"
-              puts @events[selection.to_i-1][:date]
-              puts "#{@events[selection.to_i-1][:moreInfoURL]}"
+            puts @events[selection.to_i-1][:date]
+            puts "#{@events[selection.to_i-1][:moreInfoURL]}"
             puts ""
           end
         end
@@ -115,12 +107,12 @@ class MtgEventInfo::CLI
         puts "Please enter a number from the list."
       elsif selection == "list"
         if @input.to_i === 1 || @input.to_i === 3
-          list_events(@input.to_i)
+        list_events(@input.to_i)
         else
-          list_events(@format_selection.to_i)
+          list_events_by_format(@format_selection)
         end
       elsif selection == "back"
-      
+        
       else
         puts "I did not understand your selection."
       end
@@ -137,19 +129,24 @@ class MtgEventInfo::CLI
       puts "#{i}. #{mtgFormat}"
     end
     puts ""
+    puts "Please enter the number corresponding to the format by which you want to sort and display upcoming events or enter 'back' to return to the main menu."
   end
   
-  def list_events_by_format(format_array, format_input)
-    @event_array = []
+  def list_events_by_format(selection)
     i = 0
-    puts "Upcoming #{format_array[format_input.to_i-1]} Events"
-    @events.each do |event|
-      if format_array[format_input.to_i-1] === event[:mtgFormat]
+    event_array = []
+    puts ""
+    @events.each.with_index do |event|
+      if @format_array[@format_selection.to_i-1] === event[:mtgFormat]
         i+=1
         puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
-        @event_array.push(event)
+        event_array.push(event)
       end
     end
+    if event_array.length === 0
+      puts "No upcoming events for the selected format."
+    end
+    puts ""
   end
 
 end
