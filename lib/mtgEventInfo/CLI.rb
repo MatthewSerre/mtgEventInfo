@@ -97,17 +97,23 @@ class MtgEventInfo::CLI
         @events.each do |event|
           if event[:location] === @events[selection.to_i-1][:location]
             puts ""
-            puts "#{@events[selection.to_i-1][:TO]} #{@events[selection.to_i-1][:location]} #{@events[selection.to_i-1][:mtgFormat]} #{@events[selection.to_i-1][:name]}"
-            puts @events[selection.to_i-1][:date]
-            puts "#{@events[selection.to_i-1][:moreInfoURL]}"
+            puts "#{event[:TO]} #{event[:location]} #{event[:mtgFormat]} #{event[:name]}"
+            puts "#{event[:date]}"
+            puts "#{event[:moreInfoURL]}"
             puts ""
+          # else
+          #   puts ""
+          #   puts "#{@events[selection.to_i-1][:TO]} #{@events[selection.to_i-1][:location]} #{@events[selection.to_i-1][:mtgFormat]} #{@events[selection.to_i-1][:name]}"
+          #   puts "#{@events[selection.to_i-1][:date]}"
+          #   puts "#{@events[selection.to_i-1][:moreInfoURL]}"
+          #   puts ""
           end
         end
       elsif selection.to_i > @events.length
         puts "Please enter a number from the list."
       elsif selection == "list"
         if @input.to_i === 1 || @input.to_i === 3
-        list_events(@input.to_i)
+          list_events(@input.to_i)
         else
           list_events_by_format(@format_selection)
         end
