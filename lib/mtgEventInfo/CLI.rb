@@ -88,8 +88,7 @@ class MtgEventInfo::CLI
       end
 
     elsif selection === 3
-      @events.uniq!{ |event| event[:location]}.sort_by!{ |event| event[:location]}
-      @events.each.with_index(1) do |event, i|
+      @events.uniq{ |event| event[:location]}.sort_by!{ |event| event[:location]}.each.with_index(1) do |event, i|
         puts "#{i}. #{event[:location]}"
       end
     end
