@@ -2,6 +2,7 @@ class MtgEventInfo::CLI
   
   def call
     puts "Welcome to Mox Ruby, a tool for displaying and sorting information about upcoming Magic: The Gathering events."
+    puts Date.today
     menu
     puts "Thank you for using Mox Ruby.  Good luck and have fun!"
   end
@@ -48,6 +49,7 @@ class MtgEventInfo::CLI
     puts ""
     puts "Please enter the number corresponding to the option by which you want to sort and display upcoming events or enter 'exit'."
     @events = MtgEventInfo::Event.all
+    @events.delete_if {|event| Date.parse(event[:date]) < Date.today}
   end
   
   def list_events(selection)
@@ -65,17 +67,19 @@ class MtgEventInfo::CLI
         puts "Please enter the number corresponding to the format by which you want to sort and display upcoming events."
         @format_selection = gets.strip.downcase
         if @format_selection.to_i > 0  && @format_selection.to_i <= @format_array.length
-          i = 0
-          puts ""
-          @events.each.with_index do |event|
-            if @format_array[@format_selection.to_i-1] === event[:mtgFormat]
-              i+=1
-              puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
+          if Date.parse(event[:date]) > Date.today
+            i = 0
+            puts ""
+            @events.each.with_index do |event|
+              if @format_array[@format_selection.to_i-1] === event[:mtgFormat]
+                i+=1
+                puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
+              end
             end
+            puts ""
+            sub_input = nil
+            list_events_with_details(sub_input)
           end
-          puts ""
-          sub_input = nil
-          list_events_with_details(sub_input)
         elsif @format_selection.to_i > @format_array.length
           puts "Please enter a number from the list."
         elsif @format_selection == "list"
