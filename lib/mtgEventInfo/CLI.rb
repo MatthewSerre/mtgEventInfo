@@ -95,18 +95,18 @@ class MtgEventInfo::CLI
       selection = gets.strip.downcase
       if selection.to_i > 0  && selection.to_i <= @events.length
         @events.each do |event|
-          if event[:location] === @events[selection.to_i-1][:location]
+          if event[:location] === @events[selection.to_i-1][:location] && @input.to_i === 3
             puts ""
             puts "#{event[:TO]} #{event[:location]} #{event[:mtgFormat]} #{event[:name]}"
             puts "#{event[:date]}"
             puts "#{event[:moreInfoURL]}"
             puts ""
-          # else
-          #   puts ""
-          #   puts "#{@events[selection.to_i-1][:TO]} #{@events[selection.to_i-1][:location]} #{@events[selection.to_i-1][:mtgFormat]} #{@events[selection.to_i-1][:name]}"
-          #   puts "#{@events[selection.to_i-1][:date]}"
-          #   puts "#{@events[selection.to_i-1][:moreInfoURL]}"
-          #   puts ""
+          elsif event[:date] === @events[selection.to_i-1][:date] && (@input.to_i === 1 || @input.to_i === 2)
+            puts ""
+            puts "#{event[:TO]} #{event[:location]} #{event[:mtgFormat]} #{event[:name]}"
+            puts "#{event[:date]}"
+            puts "#{event[:moreInfoURL]}"
+            puts ""
           end
         end
       elsif selection.to_i > @events.length
