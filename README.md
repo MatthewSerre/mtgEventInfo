@@ -1,8 +1,6 @@
 # MtgEventInfo
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/mtgEventInfo`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+MtgEventInfo is a command line interface tool written in Ruby that allows users to view information about upcoming Magic: The Gathering events from various sources.  Users can choose to display events chronologically according to date, categorically by format, or alphabetically according to location.  After selecting one of those options, users can then choose subsequent options from the submenu(s) to view detailed information about an event.
 
 ## Installation
 
@@ -22,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+The command line interface provides a menu and detailed instructions for navigation, which is done by entering a number to select one of the listed options or entering a short command such as "list" to re-list options, "back" to return to the previous menu, or "exit" to exit the program.  
 
 ## Development
 
