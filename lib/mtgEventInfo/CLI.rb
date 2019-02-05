@@ -145,6 +145,7 @@ class MtgEventInfo::CLI
   def list_events_by_format(selection)
     i = 0
     event_array = []
+    @events_with_details =[]
     puts ""
     @events.each.with_index do |event|
       if @format_array[@format_selection.to_i-1] === event[:mtgFormat]
