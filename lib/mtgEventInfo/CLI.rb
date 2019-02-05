@@ -1,9 +1,9 @@
 class MtgEventInfo::CLI
   
   def call
-    puts "Welcome to Mox Ruby, a tool for displaying and sorting information about upcoming Magic: The Gathering events."
+    puts "Welcome to MtgEventInfo, a tool for displaying and sorting information about upcoming Magic: The Gathering events."
     menu
-    puts "Thank you for using Mox Ruby.  Good luck and have fun!"
+    puts "Thank you for using MtgEventInfo.  Good luck and have fun!"
   end
 
   def menu
@@ -53,9 +53,12 @@ class MtgEventInfo::CLI
   
   def list_events(selection)
     
+    @events_with_details = []
+    
     if selection === 1
       @events.sort_by!{ |event| event[:date]}
       @events.each.with_index(1) do |event, i|
+        @events_with_details.push(event)
         puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
       end
       
@@ -82,6 +85,7 @@ class MtgEventInfo::CLI
 
     elsif selection === 3
       @events.uniq{ |event| event[:location]}.sort_by!{ |event| event[:location]}.each.with_index(1) do |event, i|
+        @events_with_details.push(event)
         puts "#{i}. #{event[:location]}"
       end
     end
@@ -93,15 +97,15 @@ class MtgEventInfo::CLI
     while selection != "back"
       puts "Please enter the number corresponding to the event about which you would like more information or enter 'list' to see the list of events again or enter 'back' to return to the main menu."
       selection = gets.strip.downcase
-      if selection.to_i > 0  && selection.to_i <= @events.length
+      if selection.to_i > 0  && selection.to_i <= @events_with_details.length
         @events.each do |event|
-          if event[:location] === @events[selection.to_i-1][:location] && @input.to_i === 3
+          if event[:location] === @events_with_details[selection.to_i-1][:location] && @input.to_i === 3
             puts ""
             puts "#{event[:TO]} #{event[:location]} #{event[:mtgFormat]} #{event[:name]}"
             puts "#{event[:date]}"
             puts "#{event[:moreInfoURL]}"
             puts ""
-          elsif event[:date] === @events[selection.to_i-1][:date] && (@input.to_i === 1 || @input.to_i === 2)
+          elsif event[:date] === @events_with_details[selection.to_i-1][:date] && (@input.to_i === 1 || @input.to_i === 2)
             puts ""
             puts "#{event[:TO]} #{event[:location]} #{event[:mtgFormat]} #{event[:name]}"
             puts "#{event[:date]}"
@@ -109,7 +113,7 @@ class MtgEventInfo::CLI
             puts ""
           end
         end
-      elsif selection.to_i > @events.length
+      elsif selection.to_i > @events_with_details.length
         puts "Please enter a number from the list."
       elsif selection == "list"
         if @input.to_i === 1 || @input.to_i === 3
@@ -144,6 +148,7 @@ class MtgEventInfo::CLI
     puts ""
     @events.each.with_index do |event|
       if @format_array[@format_selection.to_i-1] === event[:mtgFormat]
+        @events_with_details.push(event)
         i+=1
         puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
         event_array.push(event)
