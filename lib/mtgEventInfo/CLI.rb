@@ -122,7 +122,7 @@ class MtgEventInfo::CLI
           list_events_by_format(@format_selection)
         end
       elsif selection == "back"
-        
+        @events_with_details = []
       else
         puts "I did not understand your selection."
       end
