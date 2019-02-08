@@ -1,6 +1,9 @@
 class MtgEventInfo::CLI
   
   def call
+    MtgEventInfo::Scraper.scrape_scg
+    @events = MtgEventInfo::Event.all
+    binding.pry
     puts "Welcome to MtgEventInfo, a tool for displaying and sorting information about upcoming Magic: The Gathering events."
     menu
     puts "Thank you for using MtgEventInfo.  Good luck and have fun!"
@@ -47,8 +50,7 @@ class MtgEventInfo::CLI
     end
     puts ""
     puts "Please enter the number corresponding to the option by which you want to sort and display upcoming events or enter 'exit'."
-    @events = MtgEventInfo::Event.all
-    @events.delete_if {|event| Date.parse(event[:date]) < Date.today}
+    @events.delete_if {|event| Date.parse(event.date) < Date.today}
   end
   
   def list_events(selection)
@@ -56,10 +58,10 @@ class MtgEventInfo::CLI
     @events_with_details = []
     
     if selection === 1
-      @events.sort_by!{ |event| event[:date]}
+      @events.sort_by!{ |event| event.date}
       @events.each.with_index(1) do |event, i|
         @events_with_details.push(event)
-        puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
+        puts "#{i}. #{event.date} - #{event.tournamentOrganizer} #{event.name} - #{event.location}"
       end
       
     elsif selection === 2
@@ -84,9 +86,9 @@ class MtgEventInfo::CLI
       end
 
     elsif selection === 3
-      @events.uniq{ |event| event[:location]}.sort_by!{ |event| event[:location]}.each.with_index(1) do |event, i|
+      @events.uniq{ |event| event.location}.sort_by!{ |event| event.location}.each.with_index(1) do |event, i|
         @events_with_details.push(event)
-        puts "#{i}. #{event[:location]}"
+        puts "#{i}. #{event.location}"
       end
     end
     
@@ -99,21 +101,21 @@ class MtgEventInfo::CLI
       selection = gets.strip.downcase
       if selection.to_i > 0  && selection.to_i <= @events_with_details.length
         @events.each do |event|
-          if event[:location] === @events_with_details[selection.to_i-1][:location] && @input.to_i === 3
+          if event.location === @events_with_details[selection.to_i-1].location && @input.to_i === 3
             puts ""
-            puts "Event - #{event[:TO]} #{event[:name]}"
-            puts "Date - #{event[:date]}"
-            puts "Location - #{event[:location]}"
-            puts "Format - #{event[:mtgFormat]}"
-            puts "More Information - #{event[:moreInfoURL]}"
+            puts "Event - #{event.tournamentOrganizer} #{event.name}"
+            puts "Date - #{event.date}"
+            puts "Location - #{event.location}"
+            puts "Format - #{event.mtgFormat}"
+            puts "More Information - #{event.moreInfoURL}"
             puts ""
-          elsif event[:date] === @events_with_details[selection.to_i-1][:date] && (@input.to_i === 1 || @input.to_i === 2)
+          elsif event.date === @events_with_details[selection.to_i-1].date && (@input.to_i === 1 || @input.to_i === 2)
             puts ""
-            puts "Event - #{event[:TO]} #{event[:name]}"
-            puts "Date - #{event[:date]}"
-            puts "Location - #{event[:location]}"
-            puts "Format - #{event[:mtgFormat]}"
-            puts "More Information - #{event[:moreInfoURL]}"
+            puts "Event - #{event.tournamentOrganizer} #{event.name}"
+            puts "Date - #{event.date}"
+            puts "Location - #{event.location}"
+            puts "Format - #{event.mtgFormat}"
+            puts "More Information - #{event.moreInfoURL}"
             puts ""
           end
         end
@@ -152,10 +154,10 @@ class MtgEventInfo::CLI
     puts ""
     puts "Upcoming #{@format_array[@format_selection.to_i-1]} Events:"
     @events.each.with_index do |event|
-      if @format_array[@format_selection.to_i-1] === event[:mtgFormat]
+      if @format_array[@format_selection.to_i-1] === event.mtgFormat
         @events_with_details.push(event)
         i+=1
-        puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
+        puts "#{i}. #{event.date} - #{event.tournamentOrganizer} #{event.name} - #{event.location}"
       end
     end
     if @events_with_details.length === 0

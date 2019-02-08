@@ -1,6 +1,6 @@
 class MtgEventInfo::Event
   
-  attr_reader :name, :location, :date, :moreInfoURL, :mtgFormat
+  attr_reader :name, :location, :date, :moreInfoURL, :mtgFormat, :tournamentOrganizer
   
   @@all = []
   
