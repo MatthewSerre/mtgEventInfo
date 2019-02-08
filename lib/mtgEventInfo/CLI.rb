@@ -101,15 +101,19 @@ class MtgEventInfo::CLI
         @events.each do |event|
           if event[:location] === @events_with_details[selection.to_i-1][:location] && @input.to_i === 3
             puts ""
-            puts "#{event[:TO]} #{event[:location]} #{event[:mtgFormat]} #{event[:name]}"
-            puts "#{event[:date]}"
-            puts "#{event[:moreInfoURL]}"
+            puts "Event - #{event[:TO]} #{event[:name]}"
+            puts "Date - #{event[:date]}"
+            puts "Location - #{event[:location]}"
+            puts "Format - #{event[:mtgFormat]}"
+            puts "More Information - #{event[:moreInfoURL]}"
             puts ""
           elsif event[:date] === @events_with_details[selection.to_i-1][:date] && (@input.to_i === 1 || @input.to_i === 2)
             puts ""
-            puts "#{event[:TO]} #{event[:location]} #{event[:mtgFormat]} #{event[:name]}"
-            puts "#{event[:date]}"
-            puts "#{event[:moreInfoURL]}"
+            puts "Event - #{event[:TO]} #{event[:name]}"
+            puts "Date - #{event[:date]}"
+            puts "Location - #{event[:location]}"
+            puts "Format - #{event[:mtgFormat]}"
+            puts "More Information - #{event[:moreInfoURL]}"
             puts ""
           end
         end
@@ -144,18 +148,17 @@ class MtgEventInfo::CLI
   
   def list_events_by_format(selection)
     i = 0
-    event_array = []
     @events_with_details =[]
     puts ""
+    puts "Upcoming #{@format_array[@format_selection.to_i-1]} Events:"
     @events.each.with_index do |event|
       if @format_array[@format_selection.to_i-1] === event[:mtgFormat]
         @events_with_details.push(event)
         i+=1
         puts "#{i}. #{event[:date]} - #{event[:TO]} #{event[:name]} - #{event[:location]}"
-        event_array.push(event)
       end
     end
-    if event_array.length === 0
+    if @events_with_details.length === 0
       puts "No upcoming events for the selected format."
     end
     puts ""
