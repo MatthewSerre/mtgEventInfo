@@ -3,7 +3,6 @@ class MtgEventInfo::CLI
   def call
     MtgEventInfo::Scraper.scrape_scg
     @events = MtgEventInfo::Event.all
-    binding.pry
     puts "Welcome to MtgEventInfo, a tool for displaying and sorting information about upcoming Magic: The Gathering events."
     menu
     puts "Thank you for using MtgEventInfo.  Good luck and have fun!"
