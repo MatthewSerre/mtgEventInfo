@@ -1,1 +1,1 @@
-Insert changes here.
+Version 1.0 - This is the first version of mtgEventInfo.  See commits for history of the program up until now.

@@ -15,22 +15,21 @@ class MtgEventInfo::Event
     @events
   end
   
-  def self.scrape_cfb
-    html = open("https://www.cfbevents.com/us-canada")
-    doc = Nokogiri::HTML.parse(html)
-    page_events = doc.css("div#comp-jmuqvt3rinlineContent-gridContainer div.txtNew")
-    page_events.each do |page_event|
-      event = Hash.new
-      event[:name] = page_event.css("span[style='letter-spacing:0.05em;']").text
-      # event[:location] = page_event.css("div.event-city").text
-      # event[:date] = page_event["id"]
-      # event[:moreInfoURL] = page_event.css("div.event-title a")[0]["href"]
-      # event[:mtgFormat] = page_event.css("div.main-event div.format-box a").text
-      # event[:TO] = "Channel Fireball"
-      @events.push(event)
-    end
-    # binding.pry
-  end
+  # def self.scrape_cfb
+  #   html = open("https://magic.wizards.com/en/content/premier-events-schedule#/list")
+  #   doc = Nokogiri::HTML.parse(html)
+  #   page_events = doc.css("div.monthContainer.ng-scope")
+  #   page_events.each do |page_event|
+  #     event = Hash.new
+  #     event[:name] = page_event.css("h3.ng-binding").text
+  #     # event[:location] = page_event.css("div.event-city").text
+  #     event[:date] = "2019-02-08"
+  #     # event[:moreInfoURL] = page_event.css("div.event-title a")[0]["href"]
+  #     # event[:mtgFormat] = page_event.css("div.main-event div.format-box a").text
+  #     # event[:TO] = ""
+  #     @events.push(event)
+  #   end
+  # end
   
   def self.scrape_scg
     html = open("http://www.starcitygames.com/content/schedule")
@@ -46,7 +45,6 @@ class MtgEventInfo::Event
       event[:TO] = "Star City Games"
       @events.push(event)
     end
-    # binding.pry
   end
 
 end
